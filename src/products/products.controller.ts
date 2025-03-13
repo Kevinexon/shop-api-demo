@@ -3,13 +3,14 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product-dto';
+import { Category } from './dto/products-dto';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -17,8 +18,11 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  getAllProducts() {
-    return this.productsService.getAllProducts();
+  getAllProducts(
+    @Query('category') category?: Category,
+    @Query('sort') sort?: 'desc' | 'asc',
+  ) {
+    return this.productsService.getAllProducts(category, sort);
   }
 
   @Get(':id')

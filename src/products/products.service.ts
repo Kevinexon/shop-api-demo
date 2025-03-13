@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ProductDto } from 'src/products/dto/products-dto';
+import { Category, ProductDto } from 'src/products/dto/products-dto';
 import { CreateProductDto } from './dto/create-product-dto';
 
 const items: ProductDto[] = [
@@ -17,7 +17,7 @@ const items: ProductDto[] = [
     id: 2,
     name: 'keyboard',
     description: 'keyboard description',
-    price: 10,
+    price: 15,
     quantity: 10,
     producer: 'producer',
     photoUrl: 'photoUrl',
@@ -27,7 +27,7 @@ const items: ProductDto[] = [
     id: 3,
     name: 'monitor',
     description: 'monitor description',
-    price: 10,
+    price: 5,
     quantity: 10,
     producer: 'producer',
     photoUrl: 'photoUrl',
@@ -37,7 +37,7 @@ const items: ProductDto[] = [
     id: 4,
     name: 'headset',
     description: 'headset description',
-    price: 10,
+    price: 25,
     quantity: 10,
     producer: 'producer',
     photoUrl: 'photoUrl',
@@ -47,8 +47,15 @@ const items: ProductDto[] = [
 
 @Injectable()
 export class ProductsService {
-  getAllProducts(): ProductDto[] {
-    return [...items];
+  getAllProducts(category?: Category, sort?: 'desc' | 'asc'): ProductDto[] {
+    let result = [...items];
+    if (category) result = result.filter((item) => item.category === category);
+    if (sort === 'desc') {
+      result = result.sort((a, b) => b.price - a.price);
+    } else if (sort === 'asc') {
+      result = result.sort((a, b) => a.price - b.price);
+    }
+    return result;
   }
 
   getProduct(id: number) {
