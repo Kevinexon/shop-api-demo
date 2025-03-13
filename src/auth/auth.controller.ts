@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDto } from './dto/user-dto';
 import { UserDataDto } from './dto/user-data-dto';
@@ -13,12 +21,12 @@ export class AuthController {
   }
 
   @Get('user/:id')
-  getUser(@Param('id') id: number): UserDataDto | null {
+  getUser(@Param('id', ParseIntPipe) id: number): UserDataDto | null {
     return this.authService.getUserData(id);
   }
 
   @Put('user/:id')
-  editUser(@Param('id') id: number, @Body() body: UserDataDto) {
+  editUser(@Param('id', ParseIntPipe) id: number, @Body() body: UserDataDto) {
     return this.authService.editUser(id, body);
   }
 }

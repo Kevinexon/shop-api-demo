@@ -48,13 +48,13 @@ export class AuthService {
     const result = users.find(
       (user) => user.username === login && user.password === password,
     );
-    if (result) throw new HttpException('User not found', 402);
+    if (!result) throw new HttpException('User not found', 402);
     return result ?? null;
   }
 
   getUserData(id: number) {
     const result = userData.find((user) => user.userId === id);
-    if (result) throw new HttpException('User data not found', 404);
+    if (!result) throw new HttpException('User data not found', 404);
     return result ?? null;
   }
 
